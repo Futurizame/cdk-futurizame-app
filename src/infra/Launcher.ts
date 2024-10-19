@@ -1,13 +1,18 @@
 import * as cdk from "aws-cdk-lib";
-import { CoreStack } from "./stacks/CoreStack";
+import { AppStack } from "./stacks/AppStack";
+
+const service = "futurizame";
+const feature = "app";
+const stackName = `cdk-${service}-${feature}`;
 
 const app = new cdk.App();
 
-const coreStack = new CoreStack(app, "CoreStack", {
-  stackName: "cdk-futurizame-core",
+const appStack = new AppStack(app, "AppStack", {
+  stackName,
 });
-cdk.Tags.of(coreStack).add("Stack", "cdk-futurizame-core");
-cdk.Tags.of(coreStack).add("Domain", "futurizame");
-cdk.Tags.of(coreStack).add("Feature", "core");
+
+cdk.Tags.of(appStack).add("Stack", stackName);
+cdk.Tags.of(appStack).add("Service", service);
+cdk.Tags.of(appStack).add("Feature", feature);
 
 app.synth();

@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "clean": "rm -rf cdk.out",
+    "cdk:deploy": "cdk deploy",
     "cdk:synth": "cdk synth --quiet"
   },
   "dependencies": {
