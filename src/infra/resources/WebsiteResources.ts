@@ -24,6 +24,17 @@ export class WebsiteResources extends cdk.NestedStack {
     });
     cdk.Tags.of(websiteBucket).add("Name", bucketName);
 
+    const websiteFunctionName = `${props.rootStackName}-rewrite`;
+    const websiteFunction = new cloudfront.Function(this, "RewriteFunction", {
+      functionName: websiteFunctionName,
+      code: cloudfront.FunctionCode.fromFile({
+        filePath: "src/functions/rewrite.js",
+      }),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
+      comment: "Function to rewrite URLs at request time",
+      autoPublish: true,
+    });
+
     const distributionName = `${props.rootStackName}-website-distribution`;
     const distribution = new cloudfront.Distribution(this, "WebsiteDistribution", {
       enabled: true,
@@ -35,6 +46,9 @@ export class WebsiteResources extends cdk.NestedStack {
           originId: "S3Origin",
         }),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        functionAssociations: [
+          { function: websiteFunction, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST },
+        ],
       },
       domainNames: [props.domain],
       certificate: props.certificate,
