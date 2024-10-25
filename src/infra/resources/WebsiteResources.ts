@@ -38,10 +38,18 @@ export class WebsiteResources extends cdk.NestedStack {
       },
       domainNames: [props.domain],
       certificate: props.certificate,
+      errorResponses: [
+        {
+          httpStatus: 403,
+          responseHttpStatus: 200,
+          responsePagePath: "/error.html",
+        },
+      ],
     });
     cdk.Tags.of(distribution).add("Name", distributionName);
 
-    [route53.RecordType.A, route53.RecordType.AAAA].forEach((recordType) => {
+    const records = [route53.RecordType.A, route53.RecordType.AAAA];
+    records.forEach((recordType) => {
       new route53.RecordSet(this, `WebsiteRecordSet${recordType}`, {
         recordName: props.domain,
         comment: `Record set ${recordType} for ${props.domain}`,
