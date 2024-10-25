@@ -1,3 +1,3 @@
-# cdk-futurizame-core
+# cdk-futurizame-app
 
-Core aws cdk project for futurizame
+App aws cdk project for futurizame
