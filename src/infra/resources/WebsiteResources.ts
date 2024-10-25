@@ -42,7 +42,7 @@ export class WebsiteResources extends cdk.NestedStack {
         {
           httpStatus: 403,
           responseHttpStatus: 200,
-          responsePagePath: "/error.html",
+          responsePagePath: "/error/index.html",
         },
       ],
     });
