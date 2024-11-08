@@ -1,7 +1,6 @@
 {
   "scripts": {
     "clean": "rm -rf cdk.out",
-    "auth": "source ./credentials.sh",
     "cdk:deploy": "cdk deploy",
     "cdk:synth": "cdk synth --quiet && webstorm cdk.out/AppStackWebsiteStack3CACC839.nested.template.json",
     "cdk:diff": "cdk diff"
@@ -12,7 +11,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.7.5",
-    "aws-cdk": "^2.162.1",
+    "aws-cdk": "^2.166.0",
     "prettier": "^3.3.3",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3"

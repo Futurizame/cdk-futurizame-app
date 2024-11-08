@@ -50,7 +50,7 @@ export class WebsiteResources extends cdk.NestedStack {
           { function: websiteFunction, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST },
         ],
       },
-      domainNames: [props.domain],
+      domainNames: [props.domain, `www.${props.domain}`],
       certificate: props.certificate,
       errorResponses: [
         {
@@ -66,7 +66,16 @@ export class WebsiteResources extends cdk.NestedStack {
     records.forEach((recordType) => {
       new route53.RecordSet(this, `WebsiteRecordSet${recordType}`, {
         recordName: props.domain,
-        comment: `Record set ${recordType} for ${props.domain}`,
+        zone: props.hostedZone,
+        recordType: recordType,
+        target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
+      });
+    });
+
+    const wwwRecords = [route53.RecordType.A, route53.RecordType.AAAA];
+    wwwRecords.forEach((recordType) => {
+      new route53.RecordSet(this, `WebsiteRecordSetWWW${recordType}`, {
+        recordName: `www.${props.domain}`,
         zone: props.hostedZone,
         recordType: recordType,
         target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
